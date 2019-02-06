@@ -1,7 +1,6 @@
-package io.javabrains.entity;
+package com.oyorooms.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,7 +20,7 @@ public class RoleEntity implements Serializable {
 	private static final long serialVersionUID = -3009157732242241606L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
@@ -32,16 +31,17 @@ public class RoleEntity implements Serializable {
 	private String description;
 
 	@OneToMany(mappedBy = "roleEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Module> module = new ArrayList<>();
+	private List<Module> module;
 
 	public RoleEntity() {
 		super();
 	}
 
-	public RoleEntity(String roleName, String description) {
+	public RoleEntity(String roleName, String description, List<Module> module) {
 		super();
 		this.roleName = roleName;
 		this.description = description;
+		this.module = module;
 	}
 
 	public Long getId() {

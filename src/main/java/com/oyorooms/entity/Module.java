@@ -1,4 +1,4 @@
-package io.javabrains.entity;
+package com.oyorooms.entity;
 
 import java.io.Serializable;
 
@@ -20,7 +20,7 @@ public class Module implements Serializable {
 	private static final long serialVersionUID = 5869721517700392866L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "module_name")

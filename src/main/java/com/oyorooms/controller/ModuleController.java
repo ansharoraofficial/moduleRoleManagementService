@@ -1,4 +1,4 @@
-package io.javabrains.controller;
+package com.oyorooms.controller;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.javabrains.entity.Module;
-import io.javabrains.service.ModuleService;
+import com.oyorooms.entity.Module;
+import com.oyorooms.service.ModuleService;
 
 @RestController
 public class ModuleController {
@@ -25,9 +25,10 @@ public class ModuleController {
 	 */
 
 	@PostMapping(value = "/role/{roleId}/module")
-	public Module addModule(@PathVariable Long roleId, @Valid @RequestBody Module module) {
+	public void addModule(@PathVariable Long roleId, @Valid @RequestBody List<Module> module) {
+		// System.out.println(module);
 
-		return moduleService.addModule(roleId, module);
+		moduleService.addModule(roleId, module);
 	}
 
 	@GetMapping(value = "/role/{roleId}/module")
@@ -36,3 +37,10 @@ public class ModuleController {
 	}
 
 }
+
+/*
+ * { "id": 6, "roleName": "PM", "description": null, "module":[ {
+ * "moduleName":"Pricing", "readAction":"/pricing",
+ * "writeAction":"/pricing_write" }, { "moduleName":"Booking",
+ * "readAction":"/booking", "writeAction":"/booking_write" }] }
+ */

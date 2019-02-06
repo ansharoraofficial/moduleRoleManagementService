@@ -1,4 +1,4 @@
-package io.javabrains.controller;
+package com.oyorooms.controller;
 
 import java.util.List;
 
@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.javabrains.entity.RoleEntity;
-import io.javabrains.service.RoleEntityService;
+import com.oyorooms.entity.RoleEntity;
+import com.oyorooms.model.request.UpdatedRoleEntity;
+import com.oyorooms.service.RoleEntityService;
 
 @RestController
 public class RoleEntityController {
@@ -22,8 +23,8 @@ public class RoleEntityController {
 	@Autowired
 	private RoleEntityService roleEntityService;
 
-	@RequestMapping(value = "/role_write", method = RequestMethod.POST)
-	public void addRoles(@RequestBody RoleEntity roleEntity) {
+	@RequestMapping(value = "/role", method = RequestMethod.POST)
+	public void addRoles(@RequestBody List<UpdatedRoleEntity> roleEntity) {
 		roleEntityService.addRole(roleEntity);
 	}
 
@@ -38,8 +39,8 @@ public class RoleEntityController {
 	}
 
 	@PutMapping(value = "/role_update/{id}")
-	public RoleEntity updateRoleEntity(@PathVariable Long id, @Valid @RequestBody RoleEntity roleEntity) {
-		return roleEntityService.updateRoleEntity(id, roleEntity);
+	public void updateRoleEntity(@PathVariable Long id, @Valid @RequestBody UpdatedRoleEntity roleEntity) {
+		roleEntityService.updateRoleEntity(id, roleEntity);
 	}
 
 	@DeleteMapping(value = "/role_delete/{id}")
