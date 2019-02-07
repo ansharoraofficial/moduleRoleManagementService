@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,13 @@ import org.springframework.stereotype.Service;
 
 import com.oyorooms.entity.RoleEntity;
 import com.oyorooms.errors.NotFoundException;
+import com.oyorooms.model.dto.RoleEntityDTO;
 import com.oyorooms.model.request.UpdatedRoleEntity;
 import com.oyorooms.repository.RoleEntityRepository;
+
+import ma.glasnost.orika.BoundMapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 
 @Service
 public class RoleEntityService {
@@ -24,14 +30,31 @@ public class RoleEntityService {
 	private ModuleService moduleService;
 
 	public void addRole(List<UpdatedRoleEntity> roleEntity) {
-		for (int i = 0; i < roleEntity.size(); i++) {
-			RoleEntity role = new RoleEntity();
-			role.setRoleName(roleEntity.get(i).getRoleName());
-			role.setDescription(roleEntity.get(i).getDescription());
 
-			roleEntityRepository.save(role);
-			// System.out.println(role);
-			moduleService.addModule(role.getId(), roleEntity.get(i).getModule());
+		// System.out.println(Entity.getRoleEntity().size());
+
+		/*
+		 * List<UpdatedRoleEntity> updatedRoleEntity = Entity.getRoleEntity(); for (int
+		 * i = 0; i < updatedRoleEntity.size(); i++) { RoleEntity role = new
+		 * RoleEntity(); role.setRoleName(updatedRoleEntity.get(i).getRoleName());
+		 * role.setDescription(updatedRoleEntity.get(i).getDescription());
+		 * roleEntityRepository.save(role); moduleService.addModule(role.getId(),
+		 * role.getModule());
+		 * 
+		 * }
+		 */
+
+		for (UpdatedRoleEntity roleObj : roleEntity) {
+			RoleEntity role = addRoleEntity(roleObj);
+			// System.out.println(role.getDescription());
+			moduleService.addModule(role.getId(), roleObj.getModule());
+			/*
+			 * RoleEntity role = new RoleEntity(); role.setRoleName(roleObj.getRoleName());
+			 * role.setDescription(roleObj.getDescription());
+			 * 
+			 * roleEntityRepository.save(role); // System.out.println(role);
+			 */
+
 		}
 
 		// moduleService.addModule(roleEntity.getId(), roleEntity.getModule());
@@ -41,10 +64,37 @@ public class RoleEntityService {
 		// moduleService.addModule(roleId, module)
 	}
 
-	public List<RoleEntity> getAllRoles() {
-		List<RoleEntity> roleEntity = new ArrayList<>();
-		roleEntity = roleEntityRepository.findAll();
-		return roleEntity;
+	@Transactional
+	private RoleEntity addRoleEntity(UpdatedRoleEntity roleObj) {
+		RoleEntity role = new RoleEntity();
+		role.setRoleName(roleObj.getRoleName());
+		role.setDescription(roleObj.getDescription());
+
+		return roleEntityRepository.save(role);
+	}
+
+	public List<RoleEntityDTO> getAllRoles() {
+		// List<RoleEntity> roleEntity = roleEntityRepository.findAll();
+
+		List<RoleEntityDTO> roleEntityDTO = new ArrayList<>();
+		List<RoleEntity> roleEntity = roleEntityRepository.findAll();
+		/*
+		 * MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+		 * mapperFactory.classMap(RoleEntity.class, RoleEntityDTO.class).byDefault();
+		 * MapperFacade mapper = mapperFactory.getMapperFacade();
+		 */
+		MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+		BoundMapperFacade<RoleEntity, RoleEntityDTO> boundMapper = mapperFactory.getMapperFacade(RoleEntity.class,
+				RoleEntityDTO.class);
+		for (RoleEntity role : roleEntity) {
+			RoleEntityDTO roleDTO = boundMapper.map(role);
+			/*
+			 * RoleEntityDTO role = new RoleEntityDTO(iterator.getId(),
+			 * iterator.getRoleName(), iterator.getDescription(), iterator.getModule());
+			 */
+			roleEntityDTO.add(roleDTO);
+		}
+		return roleEntityDTO;
 	}
 
 	public RoleEntity getRoleById(Long id) {

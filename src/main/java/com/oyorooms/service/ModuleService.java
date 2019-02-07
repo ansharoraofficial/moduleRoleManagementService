@@ -27,10 +27,10 @@ public class ModuleService {
 
 		Optional<RoleEntity> role = roleEntityRepository.findById(roleId);
 		if (role.isPresent()) {
-			for (int i = 0; i < module.size(); i++) {
+			for (Module moduleObj : module) {
 				// Module m=new Module();
-				module.get(i).setRoleEntity(role.get());
-				moduleRepository.save(module.get(i));
+				moduleObj.setRoleEntity(role.get());
+				moduleRepository.save(moduleObj);
 
 			}
 		} else {

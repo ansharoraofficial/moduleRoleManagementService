@@ -1,7 +1,6 @@
 package com.oyorooms.model.request;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.oyorooms.entity.Module;
@@ -12,7 +11,7 @@ public class UpdatedRoleEntity implements Serializable {
 	private Long id;
 	private String roleName;
 	private String description;
-	private List<Module> module = new ArrayList<>();
+	private List<Module> module;
 
 	public List<Module> getModule() {
 		return module;
@@ -44,6 +43,11 @@ public class UpdatedRoleEntity implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return "UpdatedRoleEntity [roleName=" + roleName + ", description=" + description + "]";
 	}
 
 }

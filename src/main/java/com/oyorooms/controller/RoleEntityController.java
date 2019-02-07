@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oyorooms.entity.RoleEntity;
+import com.oyorooms.model.dto.RoleEntityDTO;
+import com.oyorooms.model.request.CreateRoleRequest;
 import com.oyorooms.model.request.UpdatedRoleEntity;
 import com.oyorooms.service.RoleEntityService;
 
@@ -24,12 +26,12 @@ public class RoleEntityController {
 	private RoleEntityService roleEntityService;
 
 	@RequestMapping(value = "/role", method = RequestMethod.POST)
-	public void addRoles(@RequestBody List<UpdatedRoleEntity> roleEntity) {
-		roleEntityService.addRole(roleEntity);
+	public void addRoles(@RequestBody CreateRoleRequest request) {
+		roleEntityService.addRole(request.getRoleEntity());
 	}
 
 	@RequestMapping(value = "/role")
-	public List<RoleEntity> getAllRoles() {
+	public List<RoleEntityDTO> getAllRoles() {
 		return roleEntityService.getAllRoles();
 	}
 

@@ -67,6 +67,12 @@
 			<artifactId>spring-boot-starter-jdbc</artifactId>		
 		</dependency>
 		
+		
+		<dependency>
+		    <groupId>ma.glasnost.orika</groupId>
+		    <artifactId>orika-tests-jdk8</artifactId>
+		    <version>1.5.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
