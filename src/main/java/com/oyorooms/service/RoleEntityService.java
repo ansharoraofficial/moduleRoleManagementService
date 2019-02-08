@@ -15,13 +15,18 @@ import com.oyorooms.entity.RoleEntity;
 import com.oyorooms.errors.NotFoundException;
 import com.oyorooms.model.dto.RoleEntityDTO;
 import com.oyorooms.model.request.UpdatedRoleEntity;
+import com.oyorooms.repository.ModuleRepository;
 import com.oyorooms.repository.RoleEntityRepository;
+import com.oyorooms.entity.Module;
 
 @Service
 public class RoleEntityService {
 
 	@Autowired
 	private RoleEntityRepository roleEntityRepository;
+	
+	@Autowired
+	private ModuleRepository moduleRepository;
 
 	@Autowired
 	private ModuleService moduleService;
@@ -98,10 +103,34 @@ public class RoleEntityService {
 
 		Optional<RoleEntity> role = roleEntityRepository.findById(id);
 		if (role.isPresent()) {
-			role.get().setRoleName(roleEntity.getRoleName());
+//			role.get().setRoleName(roleEntity.getRoleName());
 			role.get().setDescription(roleEntity.getDescription());
-			role.get().setModule(roleEntity.getModule());
+//			role.get().setModule(roleEntity.getModule());
 			roleEntityRepository.save(role.get());
+//			moduleService.updateModule(id, roleEntity.getModule());
+			
+//			String oldRoleName = role.get().getRoleName();
+//			String oldDescription = role.get().getDescription();
+//			List<Module> oldModule = role.get().getModule();
+//			
+//			RoleEntity updatedRole = new RoleEntity();
+//			
+//			String newRoleName = roleEntity.getRoleName();
+//			String newDescription = roleEntity.getDescription();
+//			List<Module> newModule = roleEntity.getModule();
+//			
+//			if(newRoleName.isEmpty()) updatedRole.setRoleName(oldRoleName);
+//			else updatedRole.setRoleName(newRoleName);
+//			
+//			if(newDescription.isEmpty()) updatedRole.setDescription(oldDescription);
+//			else updatedRole.setDescription(newDescription);
+//			
+//			if(newModule.isEmpty()) updatedRole.setModule(oldModule);
+//			else updatedRole.setModule(newModule);
+//			
+//			updatedRole = roleEntityRepository.save(updatedRole);
+//			moduleService.addModule(updatedRole.getId(), updatedRole.getModule());
+//			deleteRole(id);
 		} else {
 			throw new NotFoundException("Role Not found with Id " + id);
 		}

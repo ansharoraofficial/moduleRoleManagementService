@@ -54,4 +54,31 @@ public class ModuleService {
 		return moduleRepository.findByRoleEntityId(roleId);
 	}
 
+	public String getReadAction(String moduleName) {
+		return moduleRepository.findReadActionByModuleName(moduleName);
+	}
+
+	public String getWriteAction(String moduleName) {
+		return moduleRepository.findWriteActionByModuleName(moduleName);
+	}
+
+	public String getModuleByAction(String action) {
+		return moduleRepository.getModuleByAction(action);
+	}
+
+	public void updateModule(Long moduleId, @Valid Module module) {
+		Optional<Module> oldModule = moduleRepository.findById(moduleId);
+		if(oldModule.isPresent()) {
+			if(!module.getModuleName().isEmpty())
+			oldModule.get().setModuleName(module.getModuleName());
+			if(!module.getReadAction().isEmpty())
+			oldModule.get().setReadAction(module.getReadAction());
+			if(!module.getWriteAction().isEmpty())
+			oldModule.get().setWriteAction(module.getWriteAction());
+			moduleRepository.save(oldModule.get());
+		} else {
+			throw new NotFoundException("Role Not found with Id " + moduleId);
+		}
+	}
+
 }

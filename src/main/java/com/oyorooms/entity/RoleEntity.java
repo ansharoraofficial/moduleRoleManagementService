@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "role_name" }) }, name = "role_entity")
+@Table(name = "role_entity")
 public class RoleEntity implements Serializable {
 
 	private static final long serialVersionUID = -3009157732242241606L;
@@ -25,7 +25,7 @@ public class RoleEntity implements Serializable {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "role_name")
+	@Column(name = "role_name", unique = true)
 	private String roleName;
 
 	@Column(name = "description")
