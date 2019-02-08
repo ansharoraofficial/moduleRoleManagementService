@@ -10,15 +10,12 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.oyorooms.converter.EntityToDtoConverter;
 import com.oyorooms.entity.RoleEntity;
 import com.oyorooms.errors.NotFoundException;
 import com.oyorooms.model.dto.RoleEntityDTO;
 import com.oyorooms.model.request.UpdatedRoleEntity;
 import com.oyorooms.repository.RoleEntityRepository;
-
-import ma.glasnost.orika.BoundMapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
 
 @Service
 public class RoleEntityService {
@@ -78,20 +75,10 @@ public class RoleEntityService {
 
 		List<RoleEntityDTO> roleEntityDTO = new ArrayList<>();
 		List<RoleEntity> roleEntity = roleEntityRepository.findAll();
-		/*
-		 * MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-		 * mapperFactory.classMap(RoleEntity.class, RoleEntityDTO.class).byDefault();
-		 * MapperFacade mapper = mapperFactory.getMapperFacade();
-		 */
-		MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-		BoundMapperFacade<RoleEntity, RoleEntityDTO> boundMapper = mapperFactory.getMapperFacade(RoleEntity.class,
-				RoleEntityDTO.class);
+
 		for (RoleEntity role : roleEntity) {
-			RoleEntityDTO roleDTO = boundMapper.map(role);
-			/*
-			 * RoleEntityDTO role = new RoleEntityDTO(iterator.getId(),
-			 * iterator.getRoleName(), iterator.getDescription(), iterator.getModule());
-			 */
+			RoleEntityDTO roleDTO = EntityToDtoConverter.map(role, RoleEntityDTO.class);
+
 			roleEntityDTO.add(roleDTO);
 		}
 		return roleEntityDTO;
